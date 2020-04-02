@@ -1,4 +1,11 @@
-image: docker:latest
+image: python:latest
+
+stages:
+  - parsing_dependencies
+  - checking_vul
+  - patching
+  - building
+  - pushing
 
 variables:
   DOCKER_TLS_CERTDIR: ""
@@ -9,11 +16,9 @@ services:
 before_script:
   - whoami
 
-build:
+parse:
   only:
     - merge_request
-  before_script:
-    - pwd
   script:
-    - ls
-  stage: build
+    - python ./pom-parser.py
+  stage: parsing_dependencies
