@@ -22,9 +22,7 @@ checking_vul:
     - python3 -c "import handler; handler.vulcheck()"
   stage: checking_vul
 
-paching:
-  only:
-    - merge_request                 
+paching:                
   script:
     - echo "patching ..."
   when: on_failure
