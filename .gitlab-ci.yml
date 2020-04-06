@@ -1,4 +1,10 @@
-image: docker:latest
+image: python:latest
+
+stages:
+  - checking_vul
+  - patching
+  - building
+  - pushing
 
 variables:
   DOCKER_TLS_CERTDIR: ""
@@ -9,11 +15,16 @@ services:
 before_script:
   - whoami
 
-build:
+checking_vul:                 
   only:
     - merge_request
-  before_script:
-    - pwd
   script:
-    - ls
-  stage: build
+    - python3 -c "import handler; handler.vulcheck()"
+  allow_failure: true
+  stage: checking_vul
+
+paching:                 
+  script:
+    - echo "patching ..."
+  when: on_failure
+  stage: patching
