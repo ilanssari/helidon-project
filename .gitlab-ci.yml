@@ -23,7 +23,9 @@ checking_vul:
   allow_failure: true
   stage: checking_vul
 
-paching:                 
+paching:
+  only:
+    - merge_request                 
   script:
     - echo "patching ..."
   when: on_failure
