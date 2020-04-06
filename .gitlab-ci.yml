@@ -9,21 +9,18 @@ stages:
 variables:
   DOCKER_TLS_CERTDIR: ""
 
-services:
-  - docker:dind
-
-before_script:
-  - whoami
-
-checking_vul:                 
+checking_vul:
+  stage: checking_vul                 
   only:
     - merge_request
   script:
     - python3 -c "import handler; handler.vulcheck()"
-  stage: checking_vul
+  
 
-paching:                
+paching:
+  stage: patching
+  only:
+    - merge_request                 
   script:
     - echo "patching ..."
   when: on_failure
-  stage: patching
