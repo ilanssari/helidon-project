@@ -1,7 +1,6 @@
 image: python:latest
 
 stages:
-  - parsing_dependencies
   - checking_vul
   - patching
   - building
@@ -16,9 +15,16 @@ services:
 before_script:
   - whoami
 
-parse:
+checking_vul:                 
   only:
     - merge_request
   script:
-    - python ./pom-parser.py
-  stage: parsing_dependencies
+    - python3 -c "import handler; handler.vulcheck()"
+  allow_failure: true
+  stage: checking_vul
+
+paching:                 
+  script:
+    - echo "patching ..."
+  when: on_failure
+  stage: patching
