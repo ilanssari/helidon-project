@@ -26,7 +26,7 @@ paching:
   only:
     - merge_request                 
   script:
-    - export REMOTE_URL=echo $(git config --get remote.origin.url | sed -E  's/(.*)@(.*)/\2/')
+    - export REMOTE_URL=$(echo $(git config --get remote.origin.url | sed -E  's/(.*)@(.*)/\2/'))
     - git config --global user.email "ci.patcher@oracle.com"
     - git config --global user.name "CI Patcher"
     - python3 -c "import handler; handler.patche()"
