@@ -15,11 +15,16 @@ checking_vul:
     - merge_request
   script:
     - python3 -c "import handler; handler.vulcheck()"
+  artifacts:
+    paths:
+    - pomtest.xml
+    expire_in: 2 minutes
 
 paching:
   stage: patching
   only:
     - merge_request                 
   script:
-    - python3 -c "import handler; handler.patche()"
+    #- python3 -c "import handler; handler.patche()"
+    - ls
   when: on_failure

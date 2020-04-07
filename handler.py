@@ -38,7 +38,7 @@ def vulcheck():
                 isvul = True
     os.system("rm -f pomtest.xml")
     tree.write("pomtest.xml")
-    os.system("ls")  
+    os.system("hostname")  
     exit(isvul)
 
 def patche():
