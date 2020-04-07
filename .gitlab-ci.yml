@@ -26,8 +26,7 @@ paching:
   only:
     - merge_request                 
   script:
-    #- git config --global user.email "patcher@gitlab.issammac1.verrazzano.oracledx.com"
-    #- git config --global user.name "CI Patcher"
-    #- python3 -c "import handler; handler.patche()"
-    - git config --get remote.origin.url | sed -E  's/(.*)@(.*)/\2/'
+    - git config --global user.email "ci.patcher@oracle.com"
+    - git config --global user.name "CI Patcher"
+    - python3 -c "import handler; handler.patche()"
   when: on_failure
