@@ -26,6 +26,7 @@ paching:
   only:
     - merge_request                 
   script:
+    - echo $CI_TOKEN
     - git config --global user.email "patcher@gitlab.issammac1.verrazzano.oracledx.com"
     - git config --global user.name "CI Patcher"
     - python3 -c "import handler; handler.patche()"
