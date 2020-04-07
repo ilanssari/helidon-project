@@ -36,8 +36,15 @@ def vulcheck():
                 #print(text["fixedVersion"].split(':')[1])
                 version.text = text["fixedVersion"].split(':')[1]
                 isvul = True
-    #os.system("rm -f pomtest.xml")
-    #tree.write("pomtest.xml")  
+    os.system("rm -f pomtest.xml")
+    tree.write("pomtest.xml")  
     exit(isvul)
+
+def patche():
+    import os
+    os.system("ORIGBRANCH=${CI_COMMIT_REF_NAME}")
+    os.system("git checkout -b patch-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHA}")
+    os.system('git add pomtest.xml && git commit -m "patche vulnerabilities for ${CI_COMMIT_REF_NAME}"')
+    os.system('git push -f -o merge_request.create -o merge_request.target=$ORIGBRANCH -o merge_request.remove_source_branch -o merge_request.title="patche vulnerabilities" merge_request.description="patche vulnerabilities"')
 
 
