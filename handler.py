@@ -42,7 +42,7 @@ def vulcheck():
 
 def patche():
     import os 
-    os.system("ORIGBRANCH=${CI_COMMIT_REF_NAME}")
+    os.system("export ORIGBRANCH=${CI_COMMIT_REF_NAME}")
     os.system("git remote set-url origin https://gitlab-ci-token:URy3bj2hg8QZzTwPeCzx@gitlab.issammac1.verrazzano.oracledx.com/demos/vulpatcher.git")
     os.system("git checkout -b patch-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHA}")
     os.system('git add pomtest.xml && git commit -m "patche vulnerabilities for ${CI_COMMIT_REF_NAME}"')
