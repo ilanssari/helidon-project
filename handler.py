@@ -42,6 +42,7 @@ def vulcheck():
 
 def patche():
     import os 
+    os.system("echo $CI_TOKEN")
     os.system("ORIGBRANCH=${CI_COMMIT_REF_NAME}")
     os.system("git remote set-url --push origin $(echo $CI_BUILD_REPO | perl -pe 's#.*@(.+?(\:\d+)?)/#git@\1:#')")
     os.system("git checkout -b patch-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHA}")
