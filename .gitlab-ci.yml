@@ -17,7 +17,7 @@ checking_vul:
     - python3 -c "import handler; handler.vulcheck()"
   artifacts:
     paths:
-    - pomtest.xml
+    - pom.xml
     expire_in: 21 minutes
     when: on_failure
 
