@@ -19,6 +19,7 @@ checking_vul:
     paths:
     - pomtest.xml
     expire_in: 21 minutes
+    when: on_failure
 
 paching:
   stage: patching
@@ -27,5 +28,4 @@ paching:
   script:
     #- python3 -c "import handler; handler.patche()"
     - ls
-    - cat pomtest.xml
   when: on_failure
