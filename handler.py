@@ -44,7 +44,8 @@ def patche():
     import os 
     #os.system("export ORIGBRANCH=${CI_COMMIT_REF_NAME}")
     origbranch = os.popen('echo ${CI_COMMIT_REF_NAME}').read()
-    os.system("git remote set-url origin https://gitlab-ci-token:URy3bj2hg8QZzTwPeCzx@gitlab.issammac1.verrazzano.oracledx.com/demos/vulpatcher.git")
+    token = os.popen('echo ${CI_TOKEN}').read()
+    os.system("git remote set-url origin https://gitlab-ci-token:" + token + "@gitlab.issammac1.verrazzano.oracledx.com/demos/vulpatcher.git")
     os.system("git checkout -b patch-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHA}")
     os.system('git add pom.xml && git commit -m "patche vulnerabilities for ${CI_COMMIT_REF_NAME}"')
     os.system('git push origin patch-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHA} -o merge_request.create -o merge_request.target=' + origbranch + ' -o merge_request.remove_source_branch -o merge_request.title="patche vulnerabilities" -o merge_request.description="patche vulnerabilities"')
