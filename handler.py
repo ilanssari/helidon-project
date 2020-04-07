@@ -52,9 +52,9 @@ def patche():
     os.system("git remote set-url origin https://gitlab-ci-token:" + token + "@" + remoteurl)
     os.system("git checkout -b patch-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHA}")
     os.system('git add pom.xml && git commit -m "patche vulnerabilities for ${CI_COMMIT_REF_NAME}"')
-    os.system('git pushz origin patch-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHA} -o merge_request.create -o merge_request.target=' + origbranch + ' -o merge_request.remove_source_branch -o merge_request.title="patche vulnerabilities" -o merge_request.description="patche vulnerabilities" 2> /dev/null 1> /dev/null; echo $?')
+    os.system('git pushz origin patch-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHA} -o merge_request.create -o merge_request.target=' + origbranch + ' -o merge_request.remove_source_branch -o merge_request.title="patche vulnerabilities" -o merge_request.description="patche vulnerabilities"')
     nonpatched = int(os.popen('echo $?').read().strip())
-    if nonpatched == 1:
+    if nonpatched != 0:
         exit(True)
     else:
         exit(False)
