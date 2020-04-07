@@ -46,10 +46,10 @@ def patche():
     origbranch = os.popen('echo ${CI_COMMIT_REF_NAME}').read().strip()
     token = os.popen('echo ${CI_TOKEN}').read().strip()
     remoteurl = os.popen('echo ${REMOTE_URL}').read().strip()
-    print(os.popen("echo 'https://gitlab-ci-token:" + token + "@" + remoteurl + "'").read())
-    #os.system("git remote set-url origin https://gitlab-ci-token:" + token + "@" + remoteurl)
-    #os.system("git checkout -b patch-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHA}")
-    #os.system('git add pom.xml && git commit -m "patche vulnerabilities for ${CI_COMMIT_REF_NAME}"')
-    #os.system('git push origin patch-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHA} -o merge_request.create -o merge_request.target=' + origbranch + ' -o merge_request.remove_source_branch -o merge_request.title="patche vulnerabilities" -o merge_request.description="patche vulnerabilities"')
+    #print(os.popen("echo 'https://gitlab-ci-token:" + token + "@" + remoteurl + "'").read())
+    os.system("git remote set-url origin https://gitlab-ci-token:" + token + "@" + remoteurl)
+    os.system("git checkout -b patch-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHA}")
+    os.system('git add pom.xml && git commit -m "patche vulnerabilities for ${CI_COMMIT_REF_NAME}"')
+    os.system('git push origin patch-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHA} -o merge_request.create -o merge_request.target=' + origbranch + ' -o merge_request.remove_source_branch -o merge_request.title="patche vulnerabilities" -o merge_request.description="patche vulnerabilities"')
 
 
