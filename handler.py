@@ -37,7 +37,8 @@ def vulcheck():
                 version.text = text["fixedVersion"].split(':')[1]
                 isvul = True
     os.system("rm -f pomtest.xml")
-    tree.write("pomtest.xml")  
+    tree.write("pomtest.xml")
+    os.system("ls")  
     exit(isvul)
 
 def patche():

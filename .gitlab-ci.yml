@@ -15,7 +15,6 @@ checking_vul:
     - merge_request
   script:
     - python3 -c "import handler; handler.vulcheck()"
-    - ls
 
 paching:
   stage: patching
