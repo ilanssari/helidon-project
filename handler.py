@@ -45,7 +45,7 @@ def patche():
     #os.system("export ORIGBRANCH=${CI_COMMIT_REF_NAME}")
     origbranch = os.popen('echo ${CI_COMMIT_REF_NAME}').read()
     token = os.popen('echo ${CI_TOKEN}').read()
-    remoteurl = os.popen("echo $REMOTE_URL")
+    remoteurl = os.popen("git config --get remote.origin.url | sed -E  's/(.*)@(.*)/\2/'").read()
     print(remoteurl)
     #os.system("git remote set-url origin https://gitlab-ci-token:" + token + remoteurl)
     #os.system("git checkout -b patch-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHA}")
