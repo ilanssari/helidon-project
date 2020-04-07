@@ -43,9 +43,9 @@ def vulcheck():
 def patche():
     import os 
     
-    origbranch = os.popen('echo ${CI_COMMIT_REF_NAME}').read()
-    token = os.popen('echo ${CI_TOKEN}').read()
-    remoteurl = os.popen('echo ${REMOTE_URL}').read()
+    origbranch = os.popen('echo ${CI_COMMIT_REF_NAME}').read().strip()
+    token = os.popen('echo ${CI_TOKEN}').read().strip()
+    remoteurl = os.popen('echo ${REMOTE_URL}').read().strip()
     print(os.popen("echo 'https://gitlab-ci-token:" + token + "@" + remoteurl + "'").read())
     #os.system("git remote set-url origin https://gitlab-ci-token:" + token + "@" + remoteurl)
     #os.system("git checkout -b patch-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHA}")
