@@ -18,7 +18,7 @@ checking_vul:
   artifacts:
     paths:
     - pomtest.xml
-    expire_in: 2 minutes
+    expire_in: 21 minutes
 
 paching:
   stage: patching
@@ -27,6 +27,5 @@ paching:
   script:
     #- python3 -c "import handler; handler.patche()"
     - ls
+    - cat pomtest.xml
   when: on_failure
-  dependencies:
-    - checking_vul
