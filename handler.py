@@ -41,10 +41,11 @@ def vulcheck():
     exit(isvul)
 
 def patche():
-    import os
+    import os 
     os.system("ORIGBRANCH=${CI_COMMIT_REF_NAME}")
+    os.system("git remote set-url --push origin $(echo $CI_BUILD_REPO | perl -pe 's#.*@(.+?(\:\d+)?)/#git@\1:#')")
     os.system("git checkout -b patch-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHA}")
     os.system('git add pomtest.xml && git commit -m "patche vulnerabilities for ${CI_COMMIT_REF_NAME}"')
-    os.system('git push https://gitlab-ci-token:${CI_TOKEN}@gitlab.issammac1.verrazzano.oracledx.com/demos/vulpatcher.git patch-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHA} -o merge_request.create -o merge_request.target=$ORIGBRANCH -o merge_request.remove_source_branch -o merge_request.title="patche vulnerabilities" -o merge_request.description="patche vulnerabilities"')
+    os.system('git push origin patch-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHA} -o merge_request.create -o merge_request.target=$ORIGBRANCH -o merge_request.remove_source_branch -o merge_request.title="patche vulnerabilities" -o merge_request.description="patche vulnerabilities"')
 
 
