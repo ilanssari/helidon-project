@@ -22,5 +22,5 @@ paching:
   only:
     - merge_request                 
   script:
-    - echo "patching ..."
+    - python3 -c "import handler; handler.patche()"
   when: on_failure
