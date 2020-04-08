@@ -30,13 +30,13 @@ paching:
     - python3 -c "import handler; handler.patche()"
   when: on_failure
 
-  building:
-    image: maven:3.6.3
-    stage: building
-    only:
-      - merge_request
-    script:
-      - mvn package
-    artifacts:
-      paths:
-      - target/*.jar
+building:
+  image: maven:3.6.3
+  stage: building
+  only:
+    - merge_request
+  script:
+    - mvn package
+  artifacts:
+    paths:
+    - target/*.jar
