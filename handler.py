@@ -27,12 +27,14 @@ def vulcheck():
             try:
                 jsonurl = urllib.request.urlopen(url)
             except urllib.error.HTTPError as e:
-                #print('HTTPError: {}'.format(e.code))
+                if e.code == 404:
+                    print("healty : "+artifactId.text+":"+version.text)
+                else:
+                    print('HTTPError: {}'.format(e.code))
             except urllib.error.URLError as e:
                 print('URLError: {}'.format(e.reason))
             else:
                 text = json.loads(jsonurl.read())
-                #print(text["fixedVersion"].split(':')[1])
                 version.text = text["fixedVersion"].split(':')[1]
                 isvul = True
     os.system("rm -f pom.xml")
