@@ -1,15 +1,11 @@
-image: python:3.8.2
-
 stages:
   - checking_vul
   - patching
   - building
   - pushing
 
-variables:
-  DOCKER_TLS_CERTDIR: ""
-
 checking_vul:
+  image: python:3.8.2
   stage: checking_vul                 
   only:
     - merge_request
@@ -22,6 +18,7 @@ checking_vul:
     when: on_failure
 
 paching:
+  image: python:3.8.2
   stage: patching
   only:
     - merge_request
@@ -32,3 +29,14 @@ paching:
   script:
     - python3 -c "import handler; handler.patche()"
   when: on_failure
+
+  building:
+    image: maven:3.6.3
+    stage: building
+    only:
+      - merge_request
+    script:
+      - mvn package
+    artifacts:
+      paths:
+      - target/*.jar
