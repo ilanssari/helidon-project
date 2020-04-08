@@ -52,7 +52,7 @@ def patche():
     os.system("git remote set-url origin https://gitlab-ci-token:" + token + "@" + remoteurl)
     os.system("git checkout -b patch-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHA}")
     os.system('git add pom.xml && git commit -m "patche vulnerabilities for ${CI_COMMIT_REF_NAME}"')
-    code, out, err = runcommand('git pushz origin patch-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHA} -o merge_request.create -o merge_request.target=' + origbranch + ' -o merge_request.remove_source_branch -o merge_request.title="patche vulnerabilities" -o merge_request.description="patche vulnerabilities"')
+    code, out, err = runcommand('git push origin patch-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHA} -o merge_request.create -o merge_request.target=' + origbranch + ' -o merge_request.remove_source_branch -o merge_request.title="patche vulnerabilities" -o merge_request.description="patche vulnerabilities"')
     if code != 0:
         print(err)
         exit(True)
