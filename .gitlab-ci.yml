@@ -1,4 +1,4 @@
-image: python:latest
+image: python:3.8.2
 
 stages:
   - checking_vul
@@ -9,22 +9,26 @@ stages:
 variables:
   DOCKER_TLS_CERTDIR: ""
 
-services:
-  - docker:dind
-
-before_script:
-  - whoami
-
-checking_vul:                 
+checking_vul:
+  stage: checking_vul                 
   only:
     - merge_request
   script:
     - python3 -c "import handler; handler.vulcheck()"
-  allow_failure: true
-  stage: checking_vul
+  artifacts:
+    paths:
+    - pom.xml
+    expire_in: 21 minutes
+    when: on_failure
 
-paching:                 
-  script:
-    - echo "patching ..."
-  when: on_failure
+paching:
   stage: patching
+  only:
+    - merge_request
+  before_script:
+    - export REMOTE_URL=$(echo $(git config --get remote.origin.url | sed -E  's/(.*)@(.*)/\2/'))
+    - git config --global user.email "ci.patcher@oracle.com"
+    - git config --global user.name "CI Patcher"
+  script:
+    - python3 -c "import handler; handler.patche()"
+  when: on_failure
