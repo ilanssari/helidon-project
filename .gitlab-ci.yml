@@ -74,4 +74,4 @@ build:
     - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"root\",\"password\":\"$CI_TOKEN\"}}}" > /kaniko/.docker/config.json
     - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --destination $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG
   only:
-    - tags
+    - merge_request
