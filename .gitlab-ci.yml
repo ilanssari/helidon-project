@@ -1,71 +1,47 @@
 stages:
-  #- checking_vul
-  #- patching
-  #- building
+  - checking_vul
+  - patching
+  - building
   - pushing
 
-#checking_vul:
-#  image: python:3.8.2
-#  stage: checking_vul                 
-#  only:
-#    - merge_request
-#  script:
-#    #- python3 -c "import handler; handler.vulcheck()"
-#    - ls
-#  #artifacts:
-#  #  paths:
-#  #  - pom.xml
-#  #  expire_in: 21 minutes
-#  #  when: on_failure
+checking_vul:
+  image: python:3.8.2
+  stage: checking_vul                 
+  only:
+    - merge_request
+  script:
+    - python3 -c "import handler; handler.vulcheck()"
+  artifacts:
+    paths:
+    - pom.xml
+    expire_in: 10 minutes
+    when: on_failure
 
-#paching:
-#  image: python:3.8.2
-#  stage: patching
-#  only:
-#    - merge_request
-#  before_script:
-#    #- export REMOTE_URL=$(echo $(git config --get remote.origin.url | sed -E  's/(.*)@(.*)/\2/'))
-#    #- git config --global user.email "ci.patcher@oracle.com"
-#    #- git config --global user.name "CI Patcher"
-#  script:
-#    #- python3 -c "import handler; handler.patche()"
-#    - ls
-#  when: on_failure
+paching:
+  image: python:3.8.2
+  stage: patching
+  only:
+    - merge_request
+  before_script:
+    - export REMOTE_URL=$(echo $(git config --get remote.origin.url | sed -E  's/(.*)@(.*)/\2/'))
+    - git config --global user.email "ci.patcher@oracle.com"
+    - git config --global user.name "CI Patcher"
+  script:
+    - python3 -c "import handler; handler.patche()"
+  when: on_failure
 
-#building:
-#  image: maven:3.6.3
-#  stage: building
-#  only:
-#    - merge_request
-#  script:
-#    #- mvn package
-#    - ls
-#  #artifacts:
-#  #  paths:
-#  #  - target/*.jar
+building:
+  image: maven:3.6.3
+  stage: building
+  only:
+    - merge_request
+  script:
+    - mvn package
+  artifacts:
+    paths:
+    - target/*.jar
 
-#pushing:
-#  image: docker:19.03.1
-#  services:
-#    - name: docker:19.03.1-dind
-#      #alias: docker
-#      entrypoint: ["env", "-u", "DOCKER_HOST"]
-#      command: ["dockerd-entrypoint.sh"]
-#  stage: pushing
-#  only:
-#    - merge_request
-#  variables:
-#    DOCKER_HOST: "tcp://docker:2375"
-#    DOCKER_DRIVER: overlay2
-#    DOCKER_TLS_CERTDIR: ""
-#  before_script:
-#    #- docker login registry.issammac1.verrazzano.oracledx.com -u root -p ${CI_TOKEN}
-#    - docker login -u root -p $CI_TOKEN $CI_REGISTRY
-#  script:
-#    #- mvn package
-#    - docker build -t $CI_REGISTRY/demos/vulpatcher:latest .
-
-build:
+pushing:
   stage: pushing
   image:
     name: gcr.io/kaniko-project/executor:debug
