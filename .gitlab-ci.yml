@@ -44,23 +44,34 @@ stages:
 #  #  paths:
 #  #  - target/*.jar
 
-pushing:
-  image: docker:19.03.1
-  services:
-    - name: docker:19.03.1-dind
-      #alias: docker
-      entrypoint: ["env", "-u", "DOCKER_HOST"]
-      command: ["dockerd-entrypoint.sh"]
+#pushing:
+#  image: docker:19.03.1
+#  services:
+#    - name: docker:19.03.1-dind
+#      #alias: docker
+#      entrypoint: ["env", "-u", "DOCKER_HOST"]
+#      command: ["dockerd-entrypoint.sh"]
+#  stage: pushing
+#  only:
+#    - merge_request
+#  variables:
+#    DOCKER_HOST: "tcp://docker:2375"
+#    DOCKER_DRIVER: overlay2
+#    DOCKER_TLS_CERTDIR: ""
+#  before_script:
+#    #- docker login registry.issammac1.verrazzano.oracledx.com -u root -p ${CI_TOKEN}
+#    - docker login -u root -p $CI_TOKEN $CI_REGISTRY
+#  script:
+#    #- mvn package
+#    - docker build -t $CI_REGISTRY/demos/vulpatcher:latest .
+
+build:
   stage: pushing
-  only:
-    - merge_request
-  variables:
-    DOCKER_HOST: "tcp://docker:2375"
-    DOCKER_DRIVER: overlay2
-    DOCKER_TLS_CERTDIR: ""
-  before_script:
-    #- docker login registry.issammac1.verrazzano.oracledx.com -u root -p ${CI_TOKEN}
-    - docker login -u root -p $CI_TOKEN $CI_REGISTRY
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [""]
   script:
-    #- mvn package
-    - docker build -t $CI_REGISTRY/demos/vulpatcher:latest .
+    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"root\",\"password\":\"$CI_TOKEN\"}}}" > /kaniko/.docker/config.json
+    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --destination $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG
+  only:
+    - tags
