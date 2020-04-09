@@ -53,7 +53,7 @@ pushing:
   only:
     - merge_request
   #variables:
-  #  DOCKER_HOST: "tcp://localhost:2375"
+    DOCKER_HOST: "tcp://docker:2375"
   before_script:
     #- docker login registry.issammac1.verrazzano.oracledx.com -u root -p ${CI_TOKEN}
     - docker login -u root -p $CI_TOKEN $CI_REGISTRY
