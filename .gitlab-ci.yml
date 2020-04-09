@@ -1,7 +1,7 @@
 stages:
-  - checking_vul
-  - patching
-  - building
+  #- checking_vul
+  #- patching
+  #- building
   - pushing
 
 checking_vul:
@@ -48,7 +48,7 @@ pushing:
   image: docker:19.03.1
   services:
     - name: docker:19.03.1-dind
-      alias: docker
+      #alias: docker
       entrypoint: ["env", "-u", "DOCKER_HOST"]
       command: ["dockerd-entrypoint.sh"]
   stage: pushing
