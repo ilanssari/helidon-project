@@ -10,12 +10,13 @@ checking_vul:
   only:
     - merge_request
   script:
-    - python3 -c "import handler; handler.vulcheck()"
-  artifacts:
-    paths:
-    - pom.xml
-    expire_in: 21 minutes
-    when: on_failure
+    #- python3 -c "import handler; handler.vulcheck()"
+    - ls
+  #artifacts:
+  #  paths:
+  #  - pom.xml
+  #  expire_in: 21 minutes
+  #  when: on_failure
 
 paching:
   image: python:3.8.2
@@ -23,11 +24,12 @@ paching:
   only:
     - merge_request
   before_script:
-    - export REMOTE_URL=$(echo $(git config --get remote.origin.url | sed -E  's/(.*)@(.*)/\2/'))
-    - git config --global user.email "ci.patcher@oracle.com"
-    - git config --global user.name "CI Patcher"
+    #- export REMOTE_URL=$(echo $(git config --get remote.origin.url | sed -E  's/(.*)@(.*)/\2/'))
+    #- git config --global user.email "ci.patcher@oracle.com"
+    #- git config --global user.name "CI Patcher"
   script:
-    - python3 -c "import handler; handler.patche()"
+    #- python3 -c "import handler; handler.patche()"
+    - ls
   when: on_failure
 
 building:
@@ -36,7 +38,19 @@ building:
   only:
     - merge_request
   script:
-    - mvn package
-  artifacts:
-    paths:
-    - target/*.jar
+    #- mvn package
+    - ls
+  #artifacts:
+  #  paths:
+  #  - target/*.jar
+
+pushing:
+  image: docker:19.03.1
+  stage: pushing
+  only:
+    - merge_request
+  before_script:
+    - docker login docker.io -u root -p ${CI_TOKEN}
+  script:
+    #- mvn package
+    - ls
