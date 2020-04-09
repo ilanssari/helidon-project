@@ -49,11 +49,15 @@ pushing:
   services:
     - name: docker:19.03.1-dind
       alias: docker
+      entrypoint: ["env", "-u", "DOCKER_HOST"]
+      command: ["dockerd-entrypoint.sh"]
   stage: pushing
   only:
     - merge_request
   variables:
     DOCKER_HOST: "tcp://docker:2375"
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: ""
   before_script:
     #- docker login registry.issammac1.verrazzano.oracledx.com -u root -p ${CI_TOKEN}
     - docker login -u root -p $CI_TOKEN $CI_REGISTRY
