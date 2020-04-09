@@ -56,4 +56,5 @@ pushing:
     - docker login -u root -p $CI_TOKEN $CI_REGISTRY
   script:
     #- mvn package
+    - env
     - docker build -t $CI_REGISTRY/demos/vulpatcher:latest .
