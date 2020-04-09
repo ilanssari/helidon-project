@@ -50,7 +50,8 @@ pushing:
   only:
     - merge_request
   before_script:
-    - docker login registry.issammac1.verrazzano.oracledx.com -u root -p ${CI_TOKEN}
+    #- docker login registry.issammac1.verrazzano.oracledx.com -u root -p ${CI_TOKEN}
+    - docker login -u root -p $CI_TOKEN $CI_REGISTRY
   script:
     #- mvn package
-    - ls
+    - docker build -t $CI_REGISTRY/demos/vulpatcher:latest .
