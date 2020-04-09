@@ -50,7 +50,7 @@ pushing:
   only:
     - merge_request
   before_script:
-    - docker login docker.io -u root -p ${CI_TOKEN}
+    - docker login registry.issammac1.verrazzano.oracledx.com -u root -p ${CI_TOKEN}
   script:
     #- mvn package
     - ls
