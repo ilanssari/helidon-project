@@ -44,9 +44,8 @@ building:
 
 pushing:
   stage: pushing
-  rules:
-    - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"'
-      when: on_success
+  only:
+    - master
   image:
     name: gcr.io/kaniko-project/executor:debug
     entrypoint: [""]
