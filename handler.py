@@ -23,17 +23,18 @@ def vulcheck():
             groupId    = d.find("xmlns:groupId", namespaces=namespaces)
             version    = d.find("xmlns:version", namespaces=namespaces)
             line       = groupId.text + ':' + artifactId.text + ':' + version.text
-            #os.system("echo " + line + ">> listdeps.txt")
             url = "http://140.238.80.241/artifacts/" + artifactId.text + "-" + version.text + ".html"
             try:
                 jsonurl = urllib.request.urlopen(url)
             except urllib.error.HTTPError as e:
-                print('HTTPError: {}'.format(e.code))
+                if e.code == 404:
+                    print("healty : "+artifactId.text+":"+version.text)
+                else:
+                    print('HTTPError: {}'.format(e.code))
             except urllib.error.URLError as e:
                 print('URLError: {}'.format(e.reason))
             else:
                 text = json.loads(jsonurl.read())
-                #print(text["fixedVersion"].split(':')[1])
                 version.text = text["fixedVersion"].split(':')[1]
                 isvul = True
     os.system("rm -f pom.xml")
@@ -46,9 +47,6 @@ def patche():
     origbranch = os.popen('echo ${CI_COMMIT_REF_NAME}').read().strip()
     token = os.popen('echo ${CI_TOKEN}').read().strip()
     remoteurl = os.popen('echo ${REMOTE_URL}').read().strip()
-    #os.system("cat pom.xmlz 2> /dev/null 1> /dev/null")
-    #print(int(os.popen('cat pom.xmlz 2> /dev/null 1> /dev/null; echo $?').read().strip()))
-    #print(os.popen("echo 'https://gitlab-ci-token:" + token + "@" + remoteurl + "'").read())
     os.system("git remote set-url origin https://gitlab-ci-token:" + token + "@" + remoteurl)
     os.system("git checkout -b patch-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHA}")
     os.system('git add pom.xml && git commit -m "patche vulnerabilities for ${CI_COMMIT_REF_NAME}"')
@@ -59,16 +57,6 @@ def patche():
     else:
         print(out)
         exit(False)
-    os.system('bash')
-    cmd = "catdsfs"
-    #returned_value = subprocess.call(cmd, shell=True)  # returns the exit code in unix
-    #print('returned value:', returned_value)
-    #os.environ["koka"] = 'mama'
-    #print(os.environ.get('koka'))
-    #code, out, err = runcommand(cmd)
-    #print("Return code: {}".format(code))
-    #print("stdout:" + out)
-    #print("stderr:" + err)
 
 def runcommand (cmd):
     import os, subprocess

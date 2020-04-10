@@ -1,15 +1,11 @@
-image: python:3.8.2
-
 stages:
   - checking_vul
   - patching
   - building
   - pushing
 
-variables:
-  DOCKER_TLS_CERTDIR: ""
-
 checking_vul:
+  image: python:3.8.2
   stage: checking_vul                 
   only:
     - merge_request
@@ -18,10 +14,11 @@ checking_vul:
   artifacts:
     paths:
     - pom.xml
-    expire_in: 21 minutes
+    expire_in: 10 minutes
     when: on_failure
 
 paching:
+  image: python:3.8.2
   stage: patching
   only:
     - merge_request
@@ -32,3 +29,27 @@ paching:
   script:
     - python3 -c "import handler; handler.patche()"
   when: on_failure
+
+building:
+  image: maven:3.6.3
+  stage: building
+  rules:
+    - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"'
+      when: on_success
+  script:
+    - mvn package
+  artifacts:
+    paths:
+    - target/*.jar
+
+pushing:
+  stage: pushing
+  only:
+    - master
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [""]
+  script:
+    - ls target
+    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"root\",\"password\":\"$CI_TOKEN\"}}}" > /kaniko/.docker/config.json
+    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --destination $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG
