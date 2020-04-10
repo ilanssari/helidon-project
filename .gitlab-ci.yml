@@ -33,6 +33,9 @@ paching:
 building:
   image: maven:3.6.3
   stage: building
+  rules:
+    - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"'
+      when: always
   only:
     - merge_request
   script:
@@ -43,6 +46,9 @@ building:
 
 pushing:
   stage: pushing
+  rules:
+    - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"'
+      when: always
   image:
     name: gcr.io/kaniko-project/executor:debug
     entrypoint: [""]
