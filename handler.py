@@ -41,16 +41,16 @@ def vulcheck():
     tree.write("pom.xml")
     exit(isvul)
 
-def patche():
+def patch():
     import os
     
     origbranch = os.popen('echo ${CI_COMMIT_REF_NAME}').read().strip()
     token = os.popen('echo ${CI_TOKEN}').read().strip()
     remoteurl = os.popen('echo ${REMOTE_URL}').read().strip()
     os.system("git remote set-url origin https://gitlab-ci-token:" + token + "@" + remoteurl)
-    os.system("git checkout -b patch-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHA}")
-    os.system('git add pom.xml && git commit -m "patche vulnerabilities for ${CI_COMMIT_REF_NAME}"')
-    code, out, err = runcommand('git push origin patch-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHA} -o merge_request.create -o merge_request.target=' + origbranch + ' -o merge_request.remove_source_branch -o merge_request.title="patche vulnerabilities" -o merge_request.description="patche vulnerabilities"')
+    os.system("git checkout -b ${CI_COMMIT_REF_NAME}_remediation")
+    os.system('git add pom.xml && git commit -m "vulnerabilities remediation suggestion for ${CI_COMMIT_REF_NAME}"')
+    code, out, err = runcommand('git push origin ${CI_COMMIT_REF_NAME}_remediation -o merge_request.create -o merge_request.target=' + origbranch + ' -o merge_request.remove_source_branch -o merge_request.title="vulnerabilities remediation suggestion for ${CI_COMMIT_REF_NAME} " -o merge_request.description=".. we have to add the list of dependencies with r"')
     if code != 0:
         print(err)
         exit(True)

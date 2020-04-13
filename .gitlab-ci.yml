@@ -6,7 +6,7 @@ stages:
 
 checking_vul:
   image: python:3.8.2
-  stage: checking_vul                 
+  stage: checking_vul              
   only:
     - merge_request
   script:
@@ -17,25 +17,26 @@ checking_vul:
     expire_in: 10 minutes
     when: on_failure
 
-paching:
+paching and testing:
   image: python:3.8.2
   stage: patching
   only:
     - merge_request
   before_script:
+    - apt update && apt install -y maven
+    - mvn test
     - export REMOTE_URL=$(echo $(git config --get remote.origin.url | sed -E  's/(.*)@(.*)/\2/'))
     - git config --global user.email "ci.patcher@oracle.com"
     - git config --global user.name "CI Patcher"
   script:
-    - python3 -c "import handler; handler.patche()"
+    - python3 -c "import handler; handler.patch()"
   when: on_failure
 
 building:
   image: maven:3.6.3
   stage: building
-  rules:
-    - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"'
-      when: on_success
+  only:
+    - master
   script:
     - mvn package
   artifacts:
@@ -44,13 +45,11 @@ building:
 
 pushing:
   stage: pushing
-  rules:
-    - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"'
-      when: on_success
+  only:
+    - master
   image:
     name: gcr.io/kaniko-project/executor:debug
     entrypoint: [""]
   script:
-    - ls
     - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"root\",\"password\":\"$CI_TOKEN\"}}}" > /kaniko/.docker/config.json
     - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --destination $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG
