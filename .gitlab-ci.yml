@@ -3,28 +3,25 @@ stages:
   - checking_vul
   - patching
 
-variables:
-  patchit: 'false'
-
 test:
   image: python:3.8.2
   stage: testing         
   script:
-    - echo $patchit
+    - echo "daz"
 
 checking_vul:
   image: python:3.8.2
   stage: checking_vul      
   script:
-    - echo $patchit
-    - export patchit=true
-    - echo $patchit
+    - madazch
 
 paching and testing:
   image: python:3.8.2
   stage: patching
   script:
-    - echo $patchit
+    - echo "daz"
+  needs: ["checking_vul"]
+  when: on_failure
   #except:
   #  variables:
   #    - $patchit =~ /true/i
