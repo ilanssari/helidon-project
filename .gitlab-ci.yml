@@ -7,7 +7,7 @@ test:
   image: python:3.8.2
   stage: testing         
   script:
-    - echo "daz"
+    - madazch
 
 checking_vul:
   image: python:3.8.2
