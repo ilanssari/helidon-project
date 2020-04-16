@@ -1,4 +1,4 @@
-FROM openjdk:8u252-slim
+FROM maven:3.6.3-jdk-11
 
 COPY target/helidon-standalone-quickstart-mp.jar .
 

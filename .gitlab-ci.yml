@@ -41,7 +41,7 @@ paching:
   needs: ["checking_vul"]
 
 building:
-  image: maven:3.6.3
+  image: maven:3.6.3-jdk-11
   stage: building
   only:
     - master
