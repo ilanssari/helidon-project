@@ -46,10 +46,12 @@ building:
   only:
     - master
   script:
-    - mvn install -DskipTests
+    - mvn package
+    - tar -zcvf libs.tar.gz target/libs
   artifacts:
     paths:
     - target/*.jar
+    - libs.tar.gz
 
 pushing:
   stage: pushing
