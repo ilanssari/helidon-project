@@ -47,7 +47,7 @@ building:
     - master
   script:
     - mvn package
-    - tar -zcvf libs.tar.gz target/libs
+    - tar -zcvf libs.tar.gz -C target/libs .
   artifacts:
     paths:
     - target/*.jar
