@@ -20,9 +20,7 @@ def vulcheck():
     for d in deps:
         if d.find("xmlns:artifactId", namespaces=namespaces).text == 'jackson-dataformat-xml':
             artifactId = d.find("xmlns:artifactId", namespaces=namespaces)
-            groupId    = d.find("xmlns:groupId", namespaces=namespaces)
             version    = d.find("xmlns:version", namespaces=namespaces)
-            line       = groupId.text + ':' + artifactId.text + ':' + version.text
             url = "http://140.238.80.241/artifacts/" + artifactId.text + "-" + version.text + ".html"
             try:
                 jsonurl = urllib.request.urlopen(url)
@@ -38,7 +36,7 @@ def vulcheck():
                 version.text = text["fixedVersion"].split(':')[1]
                 isvul = True
     os.system("rm -f pom.xml")
-    tree.write("pom.xml")
+    tree.write("pom.xml",xml_declaration=True,encoding='UTF-8')
     exit(isvul)
 
 def patch():

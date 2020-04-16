@@ -2,26 +2,62 @@ stages:
   - testing
   - checking_vul
   - patching
+  - building
+  - pushing
 
 test:
-  image: python:3.8.2
+  image: maven:3.6.3
+  only:
+    - merge_request
   stage: testing         
   script:
-    - madazch
+    - mvn test
 
 checking_vul:
   image: python:3.8.2
-  stage: checking_vul      
+  stage: checking_vul              
+  only:
+    - merge_request
   script:
-    - madazch
+    - python3 -c "import handler; handler.vulcheck()"
+  artifacts:
+    paths:
+    - pom.xml
+    expire_in: 10 minutes
+    when: on_failure
 
-paching and testing:
+paching:
   image: python:3.8.2
   stage: patching
+  only:
+    - merge_request
+  before_script:
+    - export REMOTE_URL=$(echo $(git config --get remote.origin.url | sed -E  's/(.*)@(.*)/\2/'))
+    - git config --global user.email "ci.patcher@oracle.com"
+    - git config --global user.name "CI Patcher"
   script:
-    - echo "daz"
-  needs: ["checking_vul"]
+    - python3 -c "import handler; handler.patch()"
   when: on_failure
-  #except:
-  #  variables:
-  #    - $patchit =~ /true/i
+  needs: ["checking_vul"]
+
+building:
+  image: maven:3.6.3
+  stage: building
+  only:
+    - master
+  script:
+    - mvn package
+  artifacts:
+    paths:
+    - target/*.jar
+
+pushing:
+  stage: pushing
+  only:
+    - master
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [""]
+  script:
+    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"root\",\"password\":\"$CI_TOKEN\"}}}" > /kaniko/.docker/config.json
+    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --destination $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG
