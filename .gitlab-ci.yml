@@ -46,7 +46,7 @@ building:
   only:
     - master
   script:
-    - mvn package
+    - mvn install -DskipTests
   artifacts:
     paths:
     - target/*.jar
