@@ -1,8 +1,17 @@
 stages:
+  - testing
   - checking_vul
   - patching
   - building
   - pushing
+
+test:
+  image: maven:3.6.3
+  only:
+    - merge_request
+  stage: testing         
+  script:
+    - mvn test
 
 checking_vul:
   image: python:3.8.2
@@ -17,20 +26,19 @@ checking_vul:
     expire_in: 10 minutes
     when: on_failure
 
-paching and testing:
+paching:
   image: python:3.8.2
   stage: patching
   only:
     - merge_request
   before_script:
-    - apt update && apt install -y maven
-    - mvn test
     - export REMOTE_URL=$(echo $(git config --get remote.origin.url | sed -E  's/(.*)@(.*)/\2/'))
     - git config --global user.email "ci.patcher@oracle.com"
     - git config --global user.name "CI Patcher"
   script:
     - python3 -c "import handler; handler.patch()"
   when: on_failure
+  needs: ["checking_vul"]
 
 building:
   image: maven:3.6.3
