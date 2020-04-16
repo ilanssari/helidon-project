@@ -1,4 +1,4 @@
-FROM openjdk:13.0.2-jdk
+FROM openjdk:8u252-slim
 
 COPY target/helidon-standalone-quickstart-mp.jar .
 
