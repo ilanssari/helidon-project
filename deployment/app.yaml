@@ -29,14 +29,19 @@
 #  - port: 8080
 #    targetPort: 8080
 #    name: http
-#---
+---
 kind: Deployment
 apiVersion: extensions/v1beta1
 metadata:
   namespace: web
   name: helidon-standalone-quickstart-mp
 spec:
-  replicas: 1
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 25%
   template:
     metadata:
       labels:
@@ -45,10 +50,9 @@ spec:
     spec:
       containers:
       - name: helidon-standalone-quickstart-mp
-        image: registry.issammac1.verrazzano.oracledx.com/demos/vulpatcher:0.1.6
+        image: registry.issammac1.verrazzano.oracledx.com/demos/vulpatcher:1.0
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
       imagePullSecrets:
         - name: gitlabcred
----
