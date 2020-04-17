@@ -45,7 +45,7 @@ spec:
     spec:
       containers:
       - name: helidon-standalone-quickstart-mp
-        image: registry.issammac1.verrazzano.oracledx.com/demos/vulpatcher:latest
+        image: registry.issammac1.verrazzano.oracledx.com/demos/vulpatcher:0.1
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
