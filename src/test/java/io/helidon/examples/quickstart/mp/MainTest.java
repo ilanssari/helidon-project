@@ -49,7 +49,7 @@ class MainTest {
                 .target(getConnectionString("/greet"))
                 .request()
                 .get(JsonObject.class);
-        Assertions.assertEquals("Hello Worldzzz!", jsonObject.getString("message"),
+        Assertions.assertEquals("Hello World!", jsonObject.getString("message"),
                 "default message");
 
         jsonObject = client
