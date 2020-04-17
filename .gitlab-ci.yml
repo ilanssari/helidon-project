@@ -12,3 +12,4 @@ test:
   stage: testing         
   script:
     - env
+    - echo $CI_COMMIT_TAG
