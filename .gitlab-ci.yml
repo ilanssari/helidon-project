@@ -44,7 +44,10 @@ building:
   image: maven:3.6.3-jdk-11
   stage: building
   only:
-    - tags
+    refs:
+      - tags
+    variables:
+      - $CI_COMMIT_TAG != "flux-sync"
   script:
     - mvn package
     - tar -zcvf libs.tar.gz -C target/libs .
@@ -56,7 +59,10 @@ building:
 pushing:
   stage: pushing
   only:
-    - tags
+    refs:
+      - tags
+    variables:
+      - $CI_COMMIT_TAG != "flux-sync"
   image:
     name: gcr.io/kaniko-project/executor:debug
     entrypoint: [""]
