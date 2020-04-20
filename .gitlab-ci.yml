@@ -20,8 +20,9 @@ checking_vul:
   only:
     - merge_request
   script:
-    - env
-    - which vulcheck
+    - ls /vulpatcher
+    - bash -c env
+    - bash -c vulcheck
   artifacts:
     paths:
     - pom.xml
