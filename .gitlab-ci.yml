@@ -19,8 +19,9 @@ checking_vul:
   only:
     - merge_request
   script:
+    - env
     - echo $PYTHONPATH
-    - python3 -c "import handler; handler.vulcheck()"
+    #- python3 -c "import handler; handler.vulcheck()"
   artifacts:
     paths:
     - pom.xml
