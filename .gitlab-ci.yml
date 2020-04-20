@@ -20,6 +20,7 @@ checking_vul:
   only:
     - merge_request
   script:
+    - source /root/.bashrc
     - ls /vulpatcher
     - env
     #- vulcheck
