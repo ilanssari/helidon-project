@@ -12,6 +12,7 @@ test:
   stage: testing         
   script:
     #- mvn test
+    - ls
 
 checking_vul:
   image: registry.issammac1.verrazzano.oracledx.com/demos/ovp:1.0
