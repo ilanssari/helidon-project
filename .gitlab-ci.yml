@@ -19,7 +19,7 @@ checking_vul:
   only:
     - merge_request
   script:
-    - vulcheck
+    - python3 -c "import handler; handler.vulcheck()"
   artifacts:
     paths:
     - pom.xml
@@ -36,7 +36,7 @@ paching:
     - git config --global user.email "ci.patcher@oracle.com"
     - git config --global user.name "CI Patcher"
   script:
-    - patch
+    - python3 -c "import handler; handler.patch()"
   when: on_failure
   needs: ["checking_vul"]
 
