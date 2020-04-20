@@ -14,12 +14,12 @@ test:
     - mvn test
 
 checking_vul:
-  image: python:3.8.2
+  image: registry.issammac1.verrazzano.oracledx.com/demos/ovp:0.1
   stage: checking_vul              
   only:
     - merge_request
   script:
-    - python3 -c "import handler; handler.vulcheck()"
+    - vulcheck
   artifacts:
     paths:
     - pom.xml
@@ -27,7 +27,7 @@ checking_vul:
     when: on_failure
 
 paching:
-  image: python:3.8.2
+  image: registry.issammac1.verrazzano.oracledx.com/demos/ovp:0.1
   stage: patching
   only:
     - merge_request
@@ -36,7 +36,7 @@ paching:
     - git config --global user.email "ci.patcher@oracle.com"
     - git config --global user.name "CI Patcher"
   script:
-    - python3 -c "import handler; handler.patch()"
+    - patch
   when: on_failure
   needs: ["checking_vul"]
 
