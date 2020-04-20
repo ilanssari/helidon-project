@@ -19,6 +19,7 @@ checking_vul:
   only:
     - merge_request
   script:
+    - echo $PYTHONPATH
     - python3 -c "import handler; handler.vulcheck()"
   artifacts:
     paths:
