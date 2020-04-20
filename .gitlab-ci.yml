@@ -14,7 +14,7 @@ test:
     - mvn test
 
 checking_vul:
-  image: registry.issammac1.verrazzano.oracledx.com/demos/ovp:0.1
+  image: registry.issammac1.verrazzano.oracledx.com/demos/ovp:0.2
   stage: checking_vul              
   only:
     - merge_request
@@ -27,7 +27,7 @@ checking_vul:
     when: on_failure
 
 paching:
-  image: registry.issammac1.verrazzano.oracledx.com/demos/ovp:0.1
+  image: registry.issammac1.verrazzano.oracledx.com/demos/ovp:0.2
   stage: patching
   only:
     - merge_request
