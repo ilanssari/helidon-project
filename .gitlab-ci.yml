@@ -11,7 +11,7 @@ test:
     - merge_request
   stage: testing         
   script:
-    - mvn test
+    #- mvn test
 
 checking_vul:
   image: registry.issammac1.verrazzano.oracledx.com/demos/ovp:1.0
@@ -19,7 +19,8 @@ checking_vul:
   only:
     - merge_request
   script:
-    - vulcheck
+    - env
+    - which vulcheck
   artifacts:
     paths:
     - pom.xml
