@@ -11,15 +11,16 @@ test:
     - merge_request
   stage: testing         
   script:
-    - mvn test
+    #- mvn test
+    - ls
 
 checking_vul:
-  image: registry.issammac1.verrazzano.oracledx.com/demos/ovp:1.0
+  image: registry.issammac1.verrazzano.oracledx.com/demos/ovp:1.0.1
   stage: checking_vul              
   only:
     - merge_request
   script:
-    - python3 -c "import handler; handler.vulcheck()"
+    - vulcheck
   artifacts:
     paths:
     - pom.xml
@@ -27,7 +28,7 @@ checking_vul:
     when: on_failure
 
 paching:
-  image: registry.issammac1.verrazzano.oracledx.com/demos/ovp:1.0
+  image: registry.issammac1.verrazzano.oracledx.com/demos/ovp:1.0.1
   stage: patching
   only:
     - merge_request
