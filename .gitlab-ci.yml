@@ -20,10 +20,9 @@ checking_vul:
   only:
     - merge_request
   script:
-    #- /bin/ps -p $$
     - whoami
     - env
-    #- vulcheck
+    - vulcheck
   artifacts:
     paths:
     - pom.xml
