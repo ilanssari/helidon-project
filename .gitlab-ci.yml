@@ -28,7 +28,7 @@ checking_vul:
     when: on_failure
 
 paching:
-  image: registry.issammac1.verrazzano.oracledx.com/demos/ovp:latest
+  image: registry.issammac1.verrazzano.oracledx.com/demos/ovp:1.0
   stage: patching
   only:
     - merge_request
