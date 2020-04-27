@@ -11,8 +11,7 @@ test:
     - merge_request
   stage: testing         
   script:
-    #- mvn test
-    - ls
+    - mvn test
 
 checking_vul:
   image: registry.issammac1.verrazzano.oracledx.com/demos/ovp:v0.0.1-alpha
@@ -34,10 +33,10 @@ paching:
     - merge_request
   before_script:
     - export REMOTE_URL=$(echo $(git config --get remote.origin.url | sed -E  's/(.*)@(.*)/\2/'))
-    - git config --global user.email "ci.patcher@oracle.com"
-    - git config --global user.name "CI Patcher"
+    - /usr/local/git/bin/git config --global user.email "ci.patcher@oracle.com"
+    - /usr/local/git/bin/git config --global user.name "CI Patcher"
   script:
-    - python3 -c "import handler; handler.path()"
+    - patch
   when: on_failure
   needs: ["checking_vul"]
 
