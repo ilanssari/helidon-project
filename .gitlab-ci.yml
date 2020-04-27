@@ -15,7 +15,7 @@ test:
     - ls
 
 checking_vul:
-  image: registry.issammac1.verrazzano.oracledx.com/demos/ovp:v1.1
+  image: registry.issammac1.verrazzano.oracledx.com/demos/ovp:v0.0.1-alpha
   stage: checking_vul              
   only:
     - merge_request
@@ -28,7 +28,7 @@ checking_vul:
     when: on_failure
 
 paching:
-  image: registry.issammac1.verrazzano.oracledx.com/demos/ovp:v1.1
+  image: registry.issammac1.verrazzano.oracledx.com/demos/ovp:v0.0.1-alpha
   stage: patching
   only:
     - merge_request
