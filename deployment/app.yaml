@@ -36,7 +36,7 @@ metadata:
   namespace: web
   name: helidon-standalone-quickstart-mp
 spec:
-  replicas: 2
+  replicas: 4
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -50,7 +50,7 @@ spec:
     spec:
       containers:
       - name: helidon-standalone-quickstart-mp
-        image: registry.issammac1.verrazzano.oracledx.com/demos/vulpatcher:1.0.2
+        image: registry.issammac1.verrazzano.oracledx.com/demos/vulpatcher:1.0.3
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
