@@ -11,9 +11,14 @@ test:
     - merge_request
   stage: testing         
   script:
-    - export HTTPS_PROXY=http://www-proxy-hqdc.us.oracle.com:80/
-    - export HTTP_PROXY=http://www-proxy-hqdc.us.oracle.com:80/
-    - curl -m 10 -I https://www.google.com
+    - export NO_PROXY=127.0.0.0/8,0.0.0.0,192.168.0.0/16,10.0.0.0/8,localhost,.us.oracle.com,.uk.oracle.com,.oraclecorp.com,.clusters.oci.oraclecloud.com,169.254.169.254,100.107.236.104,elasticsearch
+    - export http_proxy=http://www-proxy-hqdc.us.oracle.com:80
+    - export ftp_proxy=http://www-proxy-hqdc.us.oracle.com:80
+    - export FTP_PROXY=http://www-proxy-hqdc.us.oracle.com:80
+    - export https_proxy=http://www-proxy-hqdc.us.oracle.com:80
+    - export HTTPS_PROXY=http://www-proxy-hqdc.us.oracle.com:80
+    - export no_proxy=127.0.0.0/8,0.0.0.0,192.168.0.0/16,10.0.0.0/8,localhost,.us.oracle.com,.uk.oracle.com,.oraclecorp.com,.clusters.oci.oraclecloud.com,169.254.169.254,100.107.236.104,elasticsearch
+    - export HTTP_PROXY=http://www-proxy-hqdc.us.oracle.com:80
     - mvn test
 
 checking_vul:
@@ -39,7 +44,7 @@ paching:
     - export REMOTE_URL=$(echo $(git config --get remote.origin.url | sed -E  's/(.*)@(.*)/\2/'))
     - git config --global user.email "ci.patcher@oracle.com"
     - git config --global user.name "CI Patcher"
-    #- unset HTTPS_PROXY ftp_proxy no_proxy https_proxy HTTP_PROX http_proxy HTTP_PROXY
+    - unset HTTPS_PROXY ftp_proxy no_proxy https_proxy HTTP_PROX http_proxy HTTP_PROXY
   script:
     - patch
   when: on_failure
