@@ -40,7 +40,8 @@ paching:
     - git config --global user.name "CI Patcher"
     - unset HTTPS_PROXY ftp_proxy no_proxy https_proxy HTTP_PROX http_proxy HTTP_PROXY
   script:
-    - patch
+    #- patch
+    - ls
   when: on_failure
   needs: ["checking_vul"]
 
