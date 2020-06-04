@@ -39,8 +39,7 @@ paching:
     - git config --global user.email "ci.patcher@oracle.com"
     - git config --global user.name "CI Patcher"
   script:
-    #- patch
-    - git config --get remote.origin.url
+    - patch
   when: on_failure
   needs: ["checking_vul"]
 
