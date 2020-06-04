@@ -11,8 +11,8 @@ test:
     - merge_request
   stage: testing         
   script:
-    - unset HTTPS_PROXY ftp_proxy no_proxy https_proxy HTTP_PROX http_proxy HTTP_PROXY
-    - env 
+    - export HTTPS_PROXY=http://www-proxy-hqdc.us.oracle.com:80/
+    - export HTTP_PROXY=http://www-proxy-hqdc.us.oracle.com:80/
     - curl -m 10 -I https://www.google.com
     - mvn test
 
