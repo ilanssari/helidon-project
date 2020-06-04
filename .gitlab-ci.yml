@@ -6,14 +6,12 @@ stages:
   - pushing
 
 test:
-  image: alirizasaral/maven-with-proxy
+  image: maven:3.6.3
   only:
     - merge_request
   stage: testing         
   script:
-    - export PROXY_HOST=http://www-proxy-hqdc.us.oracle.com
-    - export PROXY_PORT=80
-    - export PROXY_PROTOCOL=https
+    - echo '<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 https://maven.apache.org/xsd/settings-1.0.0.xsd"> <localRepository>/usr/share/maven/ref/repository</localRepository> <proxies> <proxy> <id>http-proxy</id> <active>true</active> <protocol>http</protocol> <host>www-proxy-hqdc.us.oracle.com</host> <port>80</port> </proxy> <proxy> <id>https-proxy</id> <active>true</active> <protocol>https</protocol> <host>www-proxy-hqdc.us.oracle.com</host> <port>80</port> </proxy> </proxies> </settings>' | xmllint --format - > /usr/share/maven/ref/settings.xml
     - mvn test
 
 checking_vul:
