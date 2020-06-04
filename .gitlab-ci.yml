@@ -20,9 +20,10 @@ checking_vul:
   only:
     - merge_request
   script:
-    - env
-    - curl https://www.google.com
-    #- vulcheck
+    #- env
+    #- curl https://www.google.com
+    - unset HTTPS_PROXY ftp_proxy no_proxy https_proxy HTTP_PROX http_proxy HTTP_PROXY
+    - vulcheck
   artifacts:
     paths:
     - pom.xml
