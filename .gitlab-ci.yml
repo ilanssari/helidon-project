@@ -11,6 +11,7 @@ test:
     - merge_request
   stage: testing         
   script:
+    - unset HTTPS_PROXY ftp_proxy no_proxy https_proxy HTTP_PROX http_proxy HTTP_PROXY
     - curl -m 10 -I https://www.google.com
     - mvn test
 
