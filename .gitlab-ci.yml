@@ -20,7 +20,7 @@ checking_vul:
   only:
     - merge_request
   script:
-    - HTTPS_PROXY=http://www-proxy-hqdc.us.oracle.com:80 vulcheck
+    - HTTP_PROXY=http://www-proxy-hqdc.us.oracle.com:80 vulcheck
   artifacts:
     paths:
     - pom.xml
