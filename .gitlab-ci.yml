@@ -20,7 +20,9 @@ checking_vul:
   only:
     - merge_request
   script:
-    - vulcheck
+    - env
+    - curl https://www.google.com
+    #- vulcheck
   artifacts:
     paths:
     - pom.xml
