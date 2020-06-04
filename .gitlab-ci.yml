@@ -22,8 +22,9 @@ checking_vul:
   script:
     #- env
     #- curl https://www.google.com
-    - unset HTTPS_PROXY ftp_proxy no_proxy https_proxy HTTP_PROX http_proxy HTTP_PROXY
-    - vulcheck
+    #- unset HTTPS_PROXY ftp_proxy no_proxy https_proxy HTTP_PROX http_proxy HTTP_PROXY
+    #- vulcheck http://140.238.80.241/artifacts/jackson-dataformat-xml-2.9.8.html
+    - env
   artifacts:
     paths:
     - pom.xml
