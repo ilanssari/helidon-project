@@ -20,7 +20,7 @@ checking_vul:
   only:
     - merge_request
   script:
-    - HTTP_PROXY=http://www-proxy-hqdc.us.oracle.com:80 vulcheck
+    - HTTP_PROXY=http://www-proxy-hqdc.us.oracle.com:80 vulcheck >  2>&1 /dev/null
     - env
   artifacts:
     paths:
