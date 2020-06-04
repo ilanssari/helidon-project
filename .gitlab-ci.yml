@@ -38,10 +38,9 @@ paching:
     - export REMOTE_URL=$(echo $(git config --get remote.origin.url | sed -E  's/(.*)@(.*)/\2/'))
     - git config --global user.email "ci.patcher@oracle.com"
     - git config --global user.name "CI Patcher"
-    - unset HTTPS_PROXY ftp_proxy no_proxy https_proxy HTTP_PROX http_proxy HTTP_PROXY
   script:
     #- patch
-    - ls
+    - git config --get remote.origin.url
   when: on_failure
   needs: ["checking_vul"]
 
