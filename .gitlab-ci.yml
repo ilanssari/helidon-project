@@ -14,7 +14,7 @@ test:
     - mvn test
 
 checking_vul:
-  image: registry.issammac1.verrazzano.oracledx.com/demos/ovp:v1.3
+  image: ilanssari/ovp:v1.3
   stage: checking_vul              
   only:
     - merge_request
@@ -28,7 +28,7 @@ checking_vul:
     when: on_failure
 
 paching:
-  image: registry.issammac1.verrazzano.oracledx.com/demos/ovp:v1.3
+  image: ilanssari/ovp:v1.3
   stage: patching
   only:
     - merge_request
@@ -45,10 +45,11 @@ building:
   image: maven:3.6.3-jdk-11
   stage: building
   only:
-    refs:
-      - tags
-    variables:
-      - $CI_COMMIT_TAG != "flux-sync"
+    #refs:
+    #  - tags
+    #variables:
+    #  - $CI_COMMIT_TAG != "flux-sync"
+    - master
   script:
     - mvn package
     - tar -zcvf libs.tar.gz -C target/libs .
@@ -60,14 +61,15 @@ building:
 pushing:
   stage: pushing
   only:
-    refs:
-      - tags
-    variables:
-      - $CI_COMMIT_TAG != "flux-sync"
+    - master
   image:
-    name: gcr.io/kaniko-project/executor:debug
+    name: mgit/base:kaniko-executor-debug-stable
     entrypoint: [""]
   script:
-    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"root\",\"password\":\"$CI_TOKEN\"}}}" > /kaniko/.docker/config.json
-    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --destination $CI_REGISTRY_IMAGE:latest --destination $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG
-    - echo $CI_COMMIT_TAG
+    #- echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"root\",\"password\":\"$CI_TOKEN\"}}}" > /kaniko/.docker/config.json
+    #- /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --destination $CI_REGISTRY_IMAGE:latest --destination $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG
+    - export  HTTPS_PROXY=http://www-proxy-hqdc.us.oracle.com:80/
+    #- echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"root\",\"password\":\"$CI_TOKEN\"}}}" > /kaniko/.docker/config.json
+    - echo "{\"auths\":{\"https://index.docker.io/v2/\":{\"auth\":\"$DHPWD\"}}}" > /kaniko/.docker/config.json
+    #- /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --destination $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG
+    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --destination ilanssari/helidon:1.0.4
