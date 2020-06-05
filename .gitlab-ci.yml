@@ -43,7 +43,7 @@ paching:
   needs: ["checking_vul"]
 
 building:
-  image: maven:3.6.3-jdk-11
+  image: maven:3.6.3
   stage: building
   only:
     #refs:
