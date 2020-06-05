@@ -47,7 +47,7 @@ spec:
       labels:
         app: helidon-standalone-quickstart-mp
         version: v1
-    spec:
+    spec: 
       containers:
       - name: helidon-standalone-quickstart-mp
         image: ilanssari/helidon:1.0.4 # needs some works to be automated when we patch the application
