@@ -11,15 +11,16 @@ test:
     - merge_request
   stage: testing         
   script:
-    - mvn test
+    - echo '<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 https://maven.apache.org/xsd/settings-1.0.0.xsd"> <localRepository>/usr/share/maven/ref/repository</localRepository> <proxies> <proxy> <id>http-proxy</id> <active>true</active> <protocol>http</protocol> <host>www-proxy-hqdc.us.oracle.com</host> <port>80</port> </proxy> <proxy> <id>https-proxy</id> <active>true</active> <protocol>https</protocol> <host>www-proxy-hqdc.us.oracle.com</host> <port>80</port> </proxy> </proxies> </settings>' | xmllint --format - > /usr/share/maven/ref/settings.xml
+    - mvn -s /usr/share/maven/ref/settings.xml test
 
 checking_vul:
-  image: registry.issammac1.verrazzano.oracledx.com/demos/ovp:v1.3
+  image: ilanssari/ovp:v1.3
   stage: checking_vul              
   only:
     - merge_request
   script:
-    - vulcheck
+    - HTTP_PROXY=http://www-proxy-hqdc.us.oracle.com:80 vulcheck 
   artifacts:
     paths:
     - pom.xml
@@ -28,7 +29,7 @@ checking_vul:
     when: on_failure
 
 paching:
-  image: registry.issammac1.verrazzano.oracledx.com/demos/ovp:v1.3
+  image: ilanssari/ovp:v1.3
   stage: patching
   only:
     - merge_request
@@ -45,12 +46,14 @@ building:
   image: maven:3.6.3-jdk-11
   stage: building
   only:
-    refs:
-      - tags
-    variables:
-      - $CI_COMMIT_TAG != "flux-sync"
+    #refs:
+    #  - tags
+    #variables:
+    #  - $CI_COMMIT_TAG != "flux-sync"
+    - master
   script:
-    - mvn package
+    - echo '<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 https://maven.apache.org/xsd/settings-1.0.0.xsd"> <localRepository>/usr/share/maven/ref/repository</localRepository> <proxies> <proxy> <id>http-proxy</id> <active>true</active> <protocol>http</protocol> <host>www-proxy-hqdc.us.oracle.com</host> <port>80</port> </proxy> <proxy> <id>https-proxy</id> <active>true</active> <protocol>https</protocol> <host>www-proxy-hqdc.us.oracle.com</host> <port>80</port> </proxy> </proxies> </settings>' | xmllint --format - > /usr/share/maven/ref/settings.xml
+    - mvn -s /usr/share/maven/ref/settings.xml package
     - tar -zcvf libs.tar.gz -C target/libs .
   artifacts:
     paths:
@@ -60,14 +63,15 @@ building:
 pushing:
   stage: pushing
   only:
-    refs:
-      - tags
-    variables:
-      - $CI_COMMIT_TAG != "flux-sync"
+    - master
   image:
-    name: gcr.io/kaniko-project/executor:debug
+    name: mgit/base:kaniko-executor-debug-stable
     entrypoint: [""]
   script:
-    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"root\",\"password\":\"$CI_TOKEN\"}}}" > /kaniko/.docker/config.json
-    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --destination $CI_REGISTRY_IMAGE:latest --destination $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG
-    - echo $CI_COMMIT_TAG
+    #- echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"root\",\"password\":\"$CI_TOKEN\"}}}" > /kaniko/.docker/config.json
+    #- /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --destination $CI_REGISTRY_IMAGE:latest --destination $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG
+    - export  HTTPS_PROXY=http://www-proxy-hqdc.us.oracle.com:80/
+    #- echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"root\",\"password\":\"$CI_TOKEN\"}}}" > /kaniko/.docker/config.json
+    - echo "{\"auths\":{\"https://index.docker.io/v2/\":{\"auth\":\"$DHPWD\"}}}" > /kaniko/.docker/config.json
+    #- /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --destination $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG
+    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --destination ilanssari/helidon:1.0.4
