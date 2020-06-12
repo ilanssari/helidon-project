@@ -15,9 +15,9 @@ spec:
       labels:
         app: helidon-standalone-quickstart-mp
         version: v1
-    spec: 
+    spec:
       containers:
-      - image: ilanssari/helidon:1.0.4_patched
+      - image: registry.ol.ol.v8o.oracledx.com/osscan/helidon:1.0.4_patched
         imagePullPolicy: Always
         name: helidon-standalone-quickstart-mp
         ports:
