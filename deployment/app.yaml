@@ -17,7 +17,7 @@ spec:
         version: v1
     spec:
       containers:
-      - image: registry.ol.ol.v8o.oracledx.com/osscan/helidon-project:v1.0.5
+      - image: registry.ol.ol.v8o.oracledx.com/osscan/helidon-project:v1.0.6
         imagePullPolicy: Always
         name: helidon-standalone-quickstart-mp
         ports:
