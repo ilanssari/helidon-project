@@ -77,5 +77,5 @@ pushing:
     #- export  HTTPS_PROXY=http://www-proxy-hqdc.us.oracle.com:80/
     - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"root\",\"password\":\"$CI_TOKEN\"}}}" > /kaniko/.docker/config.json
     #- echo "{\"auths\":{\"https://index.docker.io/v2/\":{\"auth\":\"$DHPWD\"}}}" > /kaniko/.docker/config.json
-    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --destination $CI_REGISTRY_IMAGE:v1.0.7
+    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --destination $CI_REGISTRY_IMAGE:v1.0.8
     #- /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --destination ilanssari/helidon:1.0.4
