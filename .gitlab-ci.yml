@@ -29,6 +29,8 @@ checking_vul:
     - deployment/app.yaml
     expire_in: 10 minutes
     when: on_failure
+  tags:
+    - ol
 
 paching:
   image: registry.ol.ol.v8o.oracledx.com/osscan/ovp:v1.4.1
@@ -43,6 +45,8 @@ paching:
     - patch
   when: on_failure
   needs: ["checking_vul"]
+tags:
+  - ol
 
 building:
   image: maven:3.6.3
