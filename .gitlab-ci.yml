@@ -16,7 +16,7 @@ test:
     - mvn test
 
 checking_vul:
-  image: registry.ol.ol.v8o.oracledx.com/osscan/ovp:v1.3-stable
+  image: registry.ol.ol.v8o.oracledx.com/osscan/ovp:v1.4.1
   stage: checking_vul              
   only:
     - merge_request
@@ -31,7 +31,7 @@ checking_vul:
     when: on_failure
 
 paching:
-  image: registry.ol.ol.v8o.oracledx.com/osscan/ovp:v1.3-stable
+  image: registry.ol.ol.v8o.oracledx.com/osscan/ovp:v1.4.1
   stage: patching
   only:
     - merge_request
