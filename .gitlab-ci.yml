@@ -45,8 +45,8 @@ paching:
     - patch
   when: on_failure
   needs: ["checking_vul"]
-tags:
-  - ol
+  tags:
+    - ol
 
 building:
   image: maven:3.6.3
