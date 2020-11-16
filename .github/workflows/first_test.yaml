@@ -5,9 +5,16 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
+    #defaults:
+      #run:
+        #shell: bash
+        #working-directory: ./
 
     steps:
-      - uses: ilanssari/helidon-project@vzn
+      - uses: actions/checkout@v2
+        with:
+          repository: 'ilanssari/helidon-project'
+          ref: 'vzn'
       - name: Set up JDK 1.8
         uses: actions/setup-java@v1
         with:
