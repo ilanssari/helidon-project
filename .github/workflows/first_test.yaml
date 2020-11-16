@@ -22,4 +22,5 @@ jobs:
           java-package: jdk
       - name: Maven test
         run: mvn test
-        #run: ls
+      - name: show current path
+        run: ls -lah
